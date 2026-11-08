@@ -24,6 +24,9 @@ st.markdown(
     <style>
     div[data-testid="stMetric"] {border: 1px solid rgba(128,128,128,.25);
         border-radius: 10px; padding: 10px 14px;}
+    div[data-testid="stMetricValue"] {font-size: 1.55rem;}
+    div[data-testid="stMetricValue"] > div, div[data-testid="stMetricLabel"] p {
+        white-space: normal; overflow: visible; text-overflow: clip;}
     .block-container {padding-top: 1.6rem;}
     </style>
     """,
@@ -137,14 +140,14 @@ if df.empty:
 # KPI row
 # --------------------------------------------------------------------------
 k = st.columns(6)
-k[0].metric("Discharges (est. full data)", f"{len(df) * SCALE:,.0f}",
+k[0].metric("Est. discharges", f"{len(df) * SCALE:,.0f}",
             help=f"{len(df):,} rows in the filtered sample × scale factor {SCALE:.2f}")
-k[1].metric("Avg length of stay", f"{df['los'].mean():.2f} days", help=f"Median: {df['los'].median():.0f} days")
+k[1].metric("Avg stay", f"{df['los'].mean():.2f} d", help=f"Median: {df['los'].median():.0f} days")
 k[2].metric("Avg charge", f"${df['total_charges'].mean():,.0f}")
 k[3].metric("Avg cost", f"${df['total_costs'].mean():,.0f}")
-k[4].metric("Charge-to-cost ratio", f"{df['total_charges'].sum() / df['total_costs'].sum():.2f}×",
+k[4].metric("Charge / cost", f"{df['total_charges'].sum() / df['total_costs'].sum():.2f}×",
             help="Total charges divided by total costs: how far billing exceeds actual cost")
-k[5].metric("In-hospital mortality", f"{(df['disposition'] == 'Expired').mean() * 100:.2f}%")
+k[5].metric("Mortality", f"{(df['disposition'] == 'Expired').mean() * 100:.2f}%")
 
 tabs = st.tabs(["📊 Overview", "🩺 Diagnoses", "💰 Charges & Severity", "🏥 Facilities & Counties",
                 "💳 Payers", "📐 Statistics", "🧠 Insights", "📘 Data & Method"])
@@ -193,7 +196,7 @@ with tabs[0]:
     with c2:
         adm = group_stats(df, "admission_type")
         fig = px.bar(adm.sort_values("discharges"), x="discharges", y="admission_type", orientation="h",
-                     color="avg_los", color_continuous_scale="Blues", title="Admission type: volume and average stay",
+                     color="avg_los", color_continuous_scale="Viridis", title="Admission type: volume and average stay",
                      labels={"discharges": "Sample discharges", "admission_type": "", "avg_los": "Avg stay (d)"})
         st.plotly_chart(style(fig, 260))
         band = df["los_band"].value_counts().reindex(LOS_ORDER).reset_index()
@@ -271,7 +274,7 @@ with tabs[2]:
         ycol, ylab = (("avg_charges", "Average charge ($)") if metric == "Average charge"
                       else ("total_charges", "Estimated total charges ($)"))
         age = age.assign(total_charges=age["total_charges"] * SCALE)
-        fig = px.bar(age, x="age_group", y=ycol, color="age_group", color_discrete_sequence=px.colors.sequential.Teal,
+        fig = px.bar(age, x="age_group", y=ycol, color="age_group", color_discrete_sequence=px.colors.qualitative.Set2,
                      title="Charges by age group", labels={"age_group": "", ycol: ylab})
         fig.update_layout(showlegend=False)
         st.plotly_chart(style(fig, 330))
@@ -310,7 +313,7 @@ with tabs[3]:
     c1, c2 = st.columns(2)
     with c1:
         cty = group_stats(df[df["county"] != "Unknown"], "county", min_n=30).sort_values("avg_los")
-        fig = px.bar(cty, x="avg_los", y="county", orientation="h", color="avg_los", color_continuous_scale="Reds",
+        fig = px.bar(cty, x="avg_los", y="county", orientation="h", color="avg_los", color_continuous_scale="Plasma",
                      title="Average stay by county", labels={"avg_los": "Avg stay (days)", "county": ""},
                      hover_data={"discharges": ":,"})
         fig.update_layout(coloraxis_showscale=False)
@@ -347,7 +350,7 @@ with tabs[4]:
                         / df.groupby("payer_primary", observed=True)["total_costs"].sum()).reindex(pay["payer_primary"]).values
         col = {"Average charge": "avg_charges", "Average cost": "avg_costs", "Charge-to-cost ratio": "ratio"}[measure]
         fig = px.bar(pay.sort_values(col), x=col, y="payer_primary", orientation="h", color=col,
-                     color_continuous_scale="Purples", title=f"{measure} by primary payer",
+                     color_continuous_scale="Viridis", title=f"{measure} by primary payer",
                      labels={col: measure, "payer_primary": ""}, hover_data={"discharges": ":,"})
         fig.update_layout(coloraxis_showscale=False)
         st.plotly_chart(style(fig, 460))
