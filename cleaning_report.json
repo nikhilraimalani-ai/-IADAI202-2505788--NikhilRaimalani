@@ -1,0 +1,70 @@
+{
+  "source": "NY SPARCS Hospital Inpatient Discharges (De-Identified) 2021",
+  "data_file": "discharges_clean.parquet",
+  "raw_rows": 2101588,
+  "rows_after_basic_cleaning": 2101588,
+  "rows_clean_final": 2101388,
+  "rows_in_app_sample": 400000,
+  "sample_scale_factor": 5.2535,
+  "dropped": {
+    "invalid_length_of_stay": 0,
+    "invalid_total_charges": 0,
+    "invalid_total_costs": 0,
+    "extreme_charge_outliers_3xIQR": 200
+  },
+  "charge_outliers_flagged_mild": 24085,
+  "los_outliers_flagged": 31734,
+  "birth_weight_pct_null": 90.16,
+  "columns_dropped": [
+    "Birth Weight (null-heavy)",
+    "Payment Typology 2/3 (kept only as n_payers)",
+    "Operating Certificate Number",
+    "Permanent Facility Id",
+    "Discharge Year",
+    "APR DRG Code",
+    "APR DRG Description",
+    "APR MDC Code"
+  ],
+  "kpis_full_clean_data": {
+    "rows": 2101388,
+    "avg_los": 5.741,
+    "median_los": 3.0,
+    "avg_charges": 73270.44,
+    "avg_costs": 21983.04,
+    "pct_emergency_dept": 62.636,
+    "pct_expired": 3.036
+  },
+  "sample_validation": {
+    "avg_los": {
+      "full": 5.741,
+      "sample": 5.752,
+      "pct_diff": 0.192
+    },
+    "median_los": {
+      "full": 3.0,
+      "sample": 3.0,
+      "pct_diff": 0.0
+    },
+    "avg_charges": {
+      "full": 73270.44,
+      "sample": 73326.66,
+      "pct_diff": 0.077
+    },
+    "avg_costs": {
+      "full": 21983.04,
+      "sample": 22000.59,
+      "pct_diff": 0.08
+    },
+    "pct_emergency_dept": {
+      "full": 62.636,
+      "sample": 62.595,
+      "pct_diff": 0.065
+    },
+    "pct_expired": {
+      "full": 3.036,
+      "sample": 3.04,
+      "pct_diff": 0.132
+    }
+  },
+  "random_seed": 42
+}
