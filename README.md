@@ -3,13 +3,12 @@
 **Course:** Mathematics for AI-II · **CRS:** Artificial Intelligence · **Assessment:** Summative (individual)
 **Student:** `<FULL NAME>` · **Student ID:** `<STUDENT ID>` · **Registration No.:** `<REG NUMBER>` · **School:** `<SCHOOL NAME>`
 
-> 🔗 **Live dashboard:** `<PASTE STREAMLIT CLOUD LINK HERE>`
+> 🔗 **Live dashboard:** `StreamLit Link: https://iadainikhilraimalani.streamlit.app/ '
 
 An interactive Streamlit dashboard built for **MediScope Health Analytics** that helps hospital administrators, clinicians
 and operations managers explore **2.1 million New York State inpatient discharges (SPARCS 2021)**: how long patients stay,
 what care costs, which diagnoses, facilities and payers drive utilisation, and where operational efficiency can improve.
 
-![Dashboard overview](screenshots/01_overview.png)
 
 ---
 
@@ -93,31 +92,9 @@ Streamlit Community Cloud  →  public live link
 
 Full analysis: [`docs/research_questions.md`](docs/research_questions.md)
 
-## 5. Run it locally
 
-```bash
-git clone <YOUR REPO URL>
-cd <YOUR REPO NAME>
-pip install -r requirements.txt
-streamlit run app.py
-```
 
-To rebuild the data from the raw file (optional):
-
-```bash
-python scripts/clean_data.py --input "Hospital_Inpatient_Discharges__SPARCS_De-Identified___2021_20231012.csv" --outdir data
-```
-
-## 6. Deployment instructions (Streamlit Community Cloud)
-
-1. Push this repository to GitHub (public, or private with access granted to `ai.assignments@wacpinternational.org`).
-2. Go to <https://streamlit.io/cloud> and sign in with GitHub.
-3. Click **Create app → Deploy a public app from GitHub**.
-4. Select the repository, branch `main`, main file path `app.py`.
-5. Click **Deploy**. The first build takes a few minutes; then copy the live URL.
-6. Paste the URL at the top of this README and commit.
-
-## 7. Repository structure
+## 5. Repository structure
 
 ```
 ├── app.py                    # Streamlit dashboard
@@ -130,13 +107,13 @@ python scripts/clean_data.py --input "Hospital_Inpatient_Discharges__SPARCS_De-I
 └── screenshots/              # dashboard screenshots
 ```
 
-## 8. Limitations
+## 6. Limitations
 
 - Charges (billed) are not costs (estimated actual cost); the app reports both.
 - Data is de-identified, so readmissions cannot be tracked.
 - 2021 was shaped by COVID-19; patterns may differ in other years.
 - The app uses a representative random sample; the Data & Method tab shows how closely it matches the full data.
 
-## 9. Data source
+## 7. Data source
 
 New York State Department of Health, *Hospital Inpatient Discharges (SPARCS De-Identified): 2021*. Diagnosis categories use the AHRQ HCUP CCSR classification.
